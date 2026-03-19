@@ -1,5 +1,5 @@
 {
-  "name": "automatchic",
+  "name": "lab1front",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -17,7 +17,7 @@
     "@angular/forms": "^21.2.0",
     "@angular/platform-browser": "^21.2.0",
     "@angular/router": "^21.2.0",
-    "globals": "^17.4.0",
+    "@auth0/angular-jwt": "^5.2.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },
@@ -27,10 +27,12 @@
     "@angular/compiler-cli": "^21.2.0",
     "@eslint/js": "^10.0.1",
     "eslint": "^10.0.3",
+    "globals": "^17.4.0",
+    "jiti": "^2.6.1",
     "jsdom": "^28.0.0",
     "prettier": "^3.8.1",
     "typescript": "~5.9.2",
-    "typescript-eslint": "^8.57.1",
+    "typescript-eslint": "^8.56.1",
     "vitest": "^4.0.8"
   }
 }

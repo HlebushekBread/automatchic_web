@@ -1,0 +1,19 @@
+@if (!isAuth()) {
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="email">Email:</label>
+      <input id="username" type="email" formControlName="username" placeholder="example@mail.com" />
+    </div>
+
+    <div>
+      <label for="password">Пароль:</label>
+      <input id="password" type="password" formControlName="password" />
+    </div>
+
+    <button type="submit" [disabled]="loginForm.invalid">Войти</button>
+  </form>
+} @else {
+  <button (click)="logout()"></button>
+}
+
+<p>{{ text() }}</p>
