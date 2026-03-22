@@ -108,10 +108,6 @@
   flex: 1;
   min-width: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 800px), 1fr));
-  @media (max-width: 1800px) {
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 450px), 1fr));
-  }
   grid-auto-rows: min-content;
   gap: 20px;
   justify-content: stretch;
@@ -120,6 +116,17 @@
   padding: 20px;
   box-sizing: border-box;
   transition: v.$transition;
+
+  &.view {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 1200px), 1fr));
+    @media (max-width: 1800px) {
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 450px), 1fr));
+    }
+  }
+
+  &.browse {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  }
 
   @media (max-width: 1000px) {
     grid-template-columns: 1fr;

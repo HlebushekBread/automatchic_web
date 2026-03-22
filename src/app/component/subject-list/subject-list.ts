@@ -1,18 +1,20 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, Input, Signal, computed, inject, signal } from '@angular/core';
 import {
   GradingTypeTranslation,
   PublicityTranslation,
-  SubjectDto,
   SubjectService,
 } from '../../service/subject-service';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { UserSubjectComponent } from './user-subject-component/user-subject-component';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BrowserSubjectComponent } from '../subject-list/browser-subject-component/browser-subject-component';
+import { UserSubjectComponent } from '../subject-list/user-subject-component/user-subject-component';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-subject-list',
-  imports: [UserSubjectComponent, FormsModule],
+  standalone: true,
+  imports: [FormsModule, BrowserSubjectComponent, UserSubjectComponent],
   templateUrl: './subject-list.html',
   styleUrl: './subject-list.scss',
 })
@@ -20,10 +22,25 @@ export class SubjectList {
   private subjectService = inject(SubjectService);
   private router = inject(Router);
 
-  subjectList = toSignal(this.subjectService.getUserSubjects(), { initialValue: [] });
+  @Input('mode') set modeInput(value: 'browse' | 'view') {
+    this.mode.set(value);
+  }
+  mode = signal<'browse' | 'view'>('browse');
+
+  subjectList = toSignal(
+    toObservable(this.mode).pipe(
+      switchMap((mode) =>
+        mode === 'browse'
+          ? this.subjectService.getPublicSubjects()
+          : this.subjectService.getUserSubjects(),
+      ),
+    ),
+    { initialValue: [] },
+  );
 
   gradingTypeTranslation = GradingTypeTranslation;
   gradingTypes = Object.keys(this.gradingTypeTranslation);
+
   publicityTranslation = PublicityTranslation;
   publicities = Object.keys(this.publicityTranslation);
 
@@ -31,48 +48,56 @@ export class SubjectList {
   selectedType = signal('all');
   selectedPublicity = signal('all');
 
+  showFilters = signal(false);
+  isCreateModalOpen = signal(false);
+  newSubjectTitle = signal('');
+
   getAbbreviation(text: string): string {
     if (!text) return '';
-
     return text
       .split(' ')
-      .filter((word) => word.length > 0)
-      .map((word) => word[0])
+      .filter((w) => w.length > 0)
+      .map((w) => w[0])
       .join('')
       .toUpperCase();
   }
 
+  normalize = (text: string) => text.toLowerCase().replace(/[\.\s\-]/g, '');
+
   filteredSubjects = computed(() => {
-    const query = this.searchQuery()
-      .replace(/[\.\s\-]/g, '')
-      .toLowerCase();
+    const query = this.normalize(this.searchQuery());
     const type = this.selectedType();
     const publicity = this.selectedPublicity();
+    const subjects = this.subjectList();
 
-    return this.subjectList().filter((subject) => {
-      const matchesSearch =
-        subject.name.toLowerCase().includes(query) ||
-        this.getAbbreviation(subject.name).toLowerCase().includes(query) ||
-        subject.teacher.toLowerCase().includes(query) ||
-        this.getAbbreviation(subject.teacher).toLowerCase().includes(query) ||
-        subject.user.fullName.toLowerCase().includes(query) ||
-        this.getAbbreviation(subject.user.fullName).toLowerCase().includes(query) ||
-        subject.user.username.toLowerCase().includes(query) ||
-        subject.user.group
-          .replace(/[\.\s\-]/g, '')
-          .toLowerCase()
-          .includes(query);
+    if (!query && type === 'all' && publicity === 'all') return subjects;
+
+    return subjects.filter((subject) => {
       const matchesType = type === 'all' || subject.gradingType === type;
       const matchesPublicity = publicity === 'all' || subject.publicity === publicity;
-      return matchesSearch && matchesType && matchesPublicity;
+
+      if (!matchesType || !matchesPublicity) return false;
+      if (!query) return true;
+
+      const searchTarget = [
+        subject.name,
+        this.getAbbreviation(subject.name),
+        subject.teacher,
+        this.getAbbreviation(subject.teacher),
+        subject.user.fullName,
+        subject.user.username,
+        subject.user.group,
+      ]
+        .map(this.normalize)
+        .join('|');
+
+      return searchTarget.includes(query);
     });
   });
 
-  isCreateModalOpen = signal(false);
-
-  newSubjectTitle = signal('');
-
   onCreate(name: string) {
+    if (this.mode() !== 'view') return;
+
     this.subjectService
       .saveSubject({
         id: 0,
@@ -95,6 +120,4 @@ export class SubjectList {
         },
       });
   }
-
-  showFilters = signal(false);
 }

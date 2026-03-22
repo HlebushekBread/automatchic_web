@@ -2,10 +2,14 @@
   <button class="mobile-filter-btn" (click)="showFilters.set(!showFilters())">
     {{ showFilters() ? 'Закрыть фильтры' : 'Показать фильтры' }}
   </button>
-  <button class="mobile-filter-btn" (click)="isCreateModalOpen.set(true)">
-    Создать новую запись
-  </button>
+
+  @if (mode() == 'view') {
+    <button class="mobile-filter-btn" (click)="isCreateModalOpen.set(true)">
+      Создать новую запись
+    </button>
+  }
 </div>
+
 <div class="page-layout">
   <aside>
     <div class="filters" [class.is-open]="showFilters()">
@@ -18,7 +22,6 @@
           placeholder="Введите название..."
         />
       </div>
-
       <div class="filter-group">
         <label>Тип оценивания</label>
         <select [ngModel]="selectedType()" (ngModelChange)="selectedType.set($event)">
@@ -28,23 +31,30 @@
           }
         </select>
       </div>
-
-      <div class="filter-group">
-        <label>Публичность</label>
-        <select [ngModel]="selectedPublicity()" (ngModelChange)="selectedPublicity.set($event)">
-          <option value="all">Все типы</option>
-          @for (publicity of publicities; track publicity) {
-            <option [value]="publicity">{{ publicityTranslation[publicity] }}</option>
-          }
-        </select>
-      </div>
+      @if (mode() == 'view') {
+        <div class="filter-group">
+          <label>Публичность</label>
+          <select [ngModel]="selectedPublicity()" (ngModelChange)="selectedPublicity.set($event)">
+            <option value="all">Все типы</option>
+            @for (publicity of publicities; track publicity) {
+              <option [value]="publicity">{{ publicityTranslation[publicity] }}</option>
+            }
+          </select>
+        </div>
+      }
     </div>
-    <div class="filters button" (click)="isCreateModalOpen.set(true)">Создать новую запись</div>
+    @if (mode() == 'view') {
+      <div class="filters button" (click)="isCreateModalOpen.set(true)">Создать новую запись</div>
+    }
   </aside>
 
-  <main class="subjects-grid">
+  <main class="subjects-grid" [class.view]="mode() == 'view'" [class.browse]="mode() == 'browse'">
     @for (subject of filteredSubjects(); track subject.id) {
-      <app-user-subject-component [subject]="subject"></app-user-subject-component>
+      @if (mode() == 'view') {
+        <app-user-subject-component [subject]="subject"></app-user-subject-component>
+      } @else {
+        <app-browser-subject-component [subject]="subject"></app-browser-subject-component>
+      }
     } @empty {
       <div class="message">
         <p style="text-align: center; line-height: 1.6">Ничего не найдено.</p>
@@ -52,11 +62,11 @@
     }
   </main>
 </div>
-@if (isCreateModalOpen()) {
+
+@if (mode() == 'view' && isCreateModalOpen()) {
   <div class="modal-overlay" (click)="isCreateModalOpen.set(false)">
     <div class="modal-content" (click)="$event.stopPropagation()">
       <h3>Создать новую запись</h3>
-
       <div class="filter-group">
         <label>Название</label>
         <input
@@ -66,7 +76,6 @@
           (keyup.enter)="onCreate(newSubjectTitle())"
         />
       </div>
-
       <div class="modal-actions">
         <button
           class="button"
