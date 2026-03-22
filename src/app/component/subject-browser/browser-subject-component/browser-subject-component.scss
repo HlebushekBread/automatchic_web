@@ -10,8 +10,10 @@
   white-space: normal;
   overflow-wrap: break-word;
   line-height: 1.4;
-  min-height: 2.8em;
-  height: 2.8em;
+  @media (min-width: 1000px) {
+    min-height: 2.8em;
+    height: 2.8em;
+  }
 }
 
 :host {
@@ -84,6 +86,7 @@
     @media (max-width: 500px) {
       flex-direction: column !important;
       align-items: flex-start !important;
+      gap: 15px;
     }
 
     .left-group {
