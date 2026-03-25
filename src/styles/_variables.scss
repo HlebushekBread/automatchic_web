@@ -14,18 +14,22 @@ $grade-max: #8a2be2;
 $status-grey-text: $text-main;
 $status-grey-bg: rgba($text-main, 0.1);
 $status-grey-border: rgba($text-main, 0.3);
+$status-grey-highlight: $text-main;
 
 $status-red-text: $grade-min;
 $status-red-bg: rgba($grade-min, 0.1);
 $status-red-border: rgba($grade-min, 0.3);
+$status-red-highlight: green;
 
 $status-yellow-text: $grade-3;
 $status-yellow-bg: rgba($grade-3, 0.1);
 $status-yellow-border: rgba($grade-3, 0.3);
+$status-yellow-highlight: goldenrod;
 
 $status-green-text: $grade-5;
 $status-green-bg: rgba($grade-5, 0.1);
 $status-green-border: rgba($grade-5, 0.3);
+$status-green-highlight: brown;
 
 $border-radius-main: 15px;
 $border-radius-secondary: 10px;

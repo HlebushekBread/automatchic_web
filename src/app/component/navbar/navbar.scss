@@ -20,6 +20,7 @@
   flex-direction: column;
   gap: 20px;
   align-items: center;
+  box-sizing: border-box;
 
   @media (max-width: 768px) {
     position: fixed;

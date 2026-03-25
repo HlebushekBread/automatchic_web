@@ -6,6 +6,9 @@
   justify-content: center;
   width: 100%;
   margin: 0 20px;
+  @media (max-width: 768px) {
+    display: block;
+  }
 
   --grade-max: #{v.$grade-max};
   --grade-5: #{v.$grade-5};
@@ -27,6 +30,9 @@
   gap: 20px;
   max-height: calc(100vh - v.$header-height);
   overflow-y: auto;
+  @media (max-width: 768px) {
+    height: calc(100vh - m.$header-height - m.$navbar-height);
+  }
 }
 
 .subject-form {
@@ -35,10 +41,18 @@
   align-items: stretch;
   gap: 20px;
   padding: 20px;
+  box-sizing: border-box;
   background-color: v.$bg-secondary;
   border-radius: v.$border-radius-main;
   box-shadow: v.$shadow-main;
   width: fit-content;
+  @media (max-width: 1060px) {
+    flex-direction: column;
+    width: auto;
+  }
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 
   .form-label {
     color: v.$text-main;
@@ -70,6 +84,11 @@
     align-items: stretch;
     gap: 40px;
     width: 100%;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
   }
 
   .form-column {
@@ -81,7 +100,21 @@
   .form-group {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 4px;
+    @media (max-width: 768px) {
+      flex-direction: row-reverse;
+      justify-content: center;
+    }
+
+    .group-element {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      @media (max-width: 768px) {
+        flex-direction: column;
+      }
+    }
 
     .hidden-radio {
       display: none;
@@ -109,6 +142,9 @@
     padding: 0 16px;
     box-sizing: border-box;
     font-size: v.$font-size-base;
+    @media (max-width: 768px) {
+      font-size: m.$font-size-base;
+    }
     transition: v.$transition;
     appearance: none;
 
@@ -137,6 +173,18 @@
       width: 100%;
     }
 
+    &.textarea {
+      display: block;
+      overflow-y: auto;
+      white-space: normal;
+      word-break: break-word;
+      resize: none;
+      padding-top: 12px;
+      @media (max-width: 768px) {
+        height: 80px;
+      }
+    }
+
     &.description {
       height: 250px;
       display: block;
@@ -145,10 +193,18 @@
       word-break: break-word;
       padding-top: 15px;
       resize: none;
+      @media (max-width: 768px) {
+        height: 150px;
+      }
     }
 
     &.grading {
       max-width: 100px;
+      @media (max-width: 768px) {
+        max-width: v.$control-height;
+        padding: 0 10px;
+        text-align: center;
+      }
     }
   }
 
@@ -156,18 +212,31 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
     height: auto;
     padding-left: 20px;
     border-left: 2px solid v.$bg-tertiary;
+    @media (max-width: 1060px) {
+      border-top: 2px solid v.$bg-tertiary;
+      border-left: none;
+      padding-top: 20px;
+      padding-left: 0;
+    }
 
     .button-group {
       display: flex;
       flex-direction: column;
       gap: 10px;
+      @media (max-width: 1060px) {
+        flex-direction: column-reverse;
+      }
     }
   }
 
   .submit-btn {
+    width: 100%;
+    align-self: center;
+    max-width: 400px;
     height: v.$control-height;
     padding: 0 20px;
     background-color: v.$bg-main;
@@ -176,6 +245,9 @@
     border-color: v.$bg-tertiary;
     border-radius: v.$border-radius-secondary;
     font-size: v.$font-size-small;
+    @media (max-width: 768px) {
+      font-size: m.$font-size-small;
+    }
     font-weight: 600;
     cursor: pointer;
     transition: v.$transition;
@@ -189,7 +261,7 @@
       background-color: v.$status-yellow-bg;
       border-color: v.$status-yellow-border;
       &:hover {
-        border-color: darkgoldenrod;
+        border-color: v.$status-yellow-highlight;
       }
     }
 
@@ -198,7 +270,7 @@
       background-color: v.$status-green-bg;
       border-color: v.$status-green-border;
       &:hover {
-        border-color: green;
+        border-color: v.$status-green-highlight;
       }
     }
 
@@ -207,7 +279,7 @@
       background-color: v.$status-red-bg;
       border-color: v.$status-red-border;
       &:hover {
-        border-color: brown;
+        border-color: v.$status-red-highlight;
       }
     }
   }
@@ -215,7 +287,11 @@
 
 .publicity-badge {
   display: flex;
+  align-self: center;
   font-size: v.$font-size-small;
+  @media (max-width: 768px) {
+    font-size: m.$font-size-small;
+  }
   cursor: pointer;
   user-select: none;
 
@@ -301,6 +377,9 @@ input[type='number'] {
   h3 {
     margin: 0;
     font-size: v.$font-size-base;
+    @media (max-width: 768px) {
+      font-size: m.$font-size-base;
+    }
     color: v.$text-active;
     font-weight: 600;
     text-align: center;
@@ -309,6 +388,9 @@ input[type='number'] {
   h4 {
     margin: 0;
     font-size: v.$font-size-base;
+    @media (max-width: 768px) {
+      font-size: m.$font-size-base;
+    }
     color: v.$text-main;
     font-weight: 600;
     text-align: center;
@@ -321,6 +403,9 @@ input[type='number'] {
 
     label {
       font-size: v.$font-size-small;
+      @media (max-width: 768px) {
+        font-size: m.$font-size-small;
+      }
       color: v.$text-main;
       font-weight: 500;
     }
@@ -333,6 +418,9 @@ input[type='number'] {
       border-radius: v.$border-radius-secondary;
       color: v.$text-main;
       font-size: v.$font-size-base;
+      @media (max-width: 768px) {
+        font-size: m.$font-size-base;
+      }
       transition: v.$transition;
       outline: none;
 
@@ -364,6 +452,9 @@ input[type='number'] {
     border-color: v.$bg-tertiary;
     border-radius: v.$border-radius-secondary;
     font-size: v.$font-size-small;
+    @media (max-width: 768px) {
+      font-size: m.$font-size-small;
+    }
     font-weight: 600;
     cursor: pointer;
     transition: v.$transition;
@@ -378,7 +469,7 @@ input[type='number'] {
       border-color: v.$status-red-border;
       &:hover {
         background-color: v.$status-red-bg;
-        border-color: brown;
+        border-color: v.$status-red-highlight;
       }
     }
   }
@@ -396,45 +487,12 @@ input[type='number'] {
   box-shadow: v.$shadow-main;
   width: 100%;
 
-  .grading-info {
-    width: 100%;
-    flex: 1;
+  .grading-wrapper {
     display: flex;
     flex-direction: row;
     gap: 20px;
-    align-items: center;
-
-    .grading-summary {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-
-      .score-summary {
-        text-align: left;
-
-        .current-score {
-          font-size: v.$font-size-base;
-          @media (max-width: 768px) {
-            font-size: m.$font-size-base;
-          }
-          font-weight: 700;
-          color: v.$text-active;
-          span {
-            color: v.$text-main;
-            font-weight: 400;
-          }
-        }
-
-        .goal-text {
-          font-size: v.$font-size-small;
-          @media (max-width: 768px) {
-            font-size: m.$font-size-small;
-          }
-          color: v.$text-main;
-          margin-top: 4px;
-        }
-      }
+    @media (max-width: 1060px) {
+      flex-direction: column;
     }
 
     .recalculate-button {
@@ -447,6 +505,9 @@ input[type='number'] {
       border-color: v.$bg-tertiary;
       border-radius: v.$border-radius-secondary;
       font-size: v.$font-size-small;
+      @media (max-width: 768px) {
+        font-size: m.$font-size-small;
+      }
       font-weight: 600;
       cursor: pointer;
       transition: v.$transition;
@@ -456,59 +517,111 @@ input[type='number'] {
       }
     }
 
-    .active-text {
-      color: v.$text-active;
-    }
-
-    .progress-container {
+    .grading-info {
+      width: 100%;
       flex: 1;
-      height: 6px;
-      background: v.$bg-tertiary;
-      border-radius: 3px;
-      position: relative;
       display: flex;
+      flex-direction: row;
+      gap: 20px;
       align-items: center;
+      @media (max-width: 768px) {
+        gap: 20px;
+        flex-direction: column-reverse;
+        align-items: flex-start;
+      }
 
-      .segment {
-        height: 100%;
+      .grading-summary {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 20px;
 
-        &:first-child {
-          border-top-left-radius: 3px;
-          border-bottom-left-radius: 3px;
+        .score-summary {
+          text-align: left;
+
+          .current-score {
+            font-size: v.$font-size-base;
+            @media (max-width: 768px) {
+              font-size: m.$font-size-base;
+            }
+            font-weight: 700;
+            color: v.$text-active;
+            span {
+              color: v.$text-main;
+              font-weight: 400;
+            }
+          }
+
+          .goal-text {
+            font-size: v.$font-size-small;
+            @media (max-width: 768px) {
+              font-size: m.$font-size-small;
+            }
+            color: v.$text-main;
+            margin-top: 4px;
+          }
         }
-        &:last-child {
-          border-top-right-radius: 3px;
-          border-bottom-right-radius: 3px;
+      }
+
+      .active-text {
+        color: v.$text-active;
+      }
+
+      .progress-container {
+        @media (min-width: 768px) {
+          flex: 1;
         }
-      }
-      .seg-less {
-        background: v.$grade-less;
-      }
-      .seg-min {
-        background: v.$grade-min;
-      }
-      .seg-3 {
-        background: v.$grade-3;
-      }
-      .seg-4 {
-        background: v.$grade-4;
-      }
-      .seg-5 {
-        background: v.$grade-5;
-      }
+        height: 6px;
+        background: v.$bg-tertiary;
+        border-radius: 3px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        @media (max-width: 768px) {
+          width: 100%;
+        }
 
-      .cursor {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 2;
+        .segment {
+          height: 100%;
 
-        left: 72%;
-        width: 4px;
-        height: 14px;
-        background: v.$text-active;
-        border-radius: 2px;
-        border: 1px solid v.$bg-secondary;
+          &:first-child {
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+          }
+          &:last-child {
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px;
+          }
+        }
+        .seg-less {
+          background: v.$grade-less;
+        }
+        .seg-min {
+          background: v.$grade-min;
+        }
+        .seg-3 {
+          background: v.$grade-3;
+        }
+        .seg-4 {
+          background: v.$grade-4;
+        }
+        .seg-5 {
+          background: v.$grade-5;
+        }
+
+        .cursor {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 2;
+
+          left: 72%;
+          width: 4px;
+          height: 14px;
+          background: v.$text-active;
+          border-radius: 2px;
+          border: 1px solid v.$bg-secondary;
+        }
       }
     }
   }
@@ -525,19 +638,88 @@ input[type='number'] {
   padding: 10px 0;
   box-sizing: border-box;
   overflow: hidden;
+  @media (max-width: 1060px) {
+    &:first-child {
+      display: none;
+    }
+  }
 
   .task-row {
     display: grid;
-    grid-template-columns: 25px 220px 200px 200px 60px 60px 60px max-content max-content;
+    grid-template-columns: 25px 220px 200px 200px 60px 80px 80px 100px;
+    @media (max-width: 1200px) {
+      grid-template-columns: 25px 150px 175px 175px 50px 70px 60px 90px;
+    }
     padding: 0 15px;
     gap: 10px;
     align-items: center;
+    @media (max-width: 1060px) {
+      display: grid !important;
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-areas:
+        'handle handle handle handle handle handle'
+        'name   name   name   name   name   name'
+        'type   type   type   date   date   date'
+        'grade  grade  max    max    weight weight'
+        'delete delete delete delete delete delete';
+      gap: 12px;
+      padding: 15px;
+
+      @media (max-width: 768px) {
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-areas:
+          'handle handle handle handle handle handle'
+          'name   name   name   name   name   name'
+          'type   type   type   type   type   type'
+          'date   date   date   date   date   date'
+          'grade  grade  max    max    weight weight'
+          'delete delete delete delete delete delete';
+
+        .name-field,
+        .type-field,
+        .date-field {
+          text-align: center;
+        }
+      }
+
+      .drag-handle {
+        grid-area: handle;
+      }
+      .name-field {
+        grid-area: name;
+      }
+      .type-field {
+        grid-area: type;
+      }
+      .date-field {
+        grid-area: date;
+      }
+      .grade-field {
+        grid-area: grade;
+      }
+      .max-field {
+        grid-area: max;
+      }
+      .weight-field {
+        grid-area: weight;
+      }
+      .delete-field {
+        grid-area: delete;
+        margin-top: 5px;
+      }
+    }
+
+    .form-input::placeholder {
+      opacity: 1;
+      color: v.$bg-tertiary;
+    }
 
     .drag-handle {
       cursor: grab;
       color: v.$text-main;
       text-align: center;
       font-size: 20px;
+
       user-select: none;
       transition: v.$transition;
 
@@ -556,6 +738,28 @@ input[type='number'] {
       border-right: 2px solid v.$bg-tertiary;
     }
 
+    .label-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      label {
+        text-align: left;
+        color: v.$text-main;
+        font-size: m.$font-size-base;
+        @media (min-width: 1060px) {
+          display: none;
+        }
+      }
+
+      .prefix-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        color: v.$text-main;
+        font-size: v.$font-size-small;
+      }
+    }
+
     .form-input,
     select {
       width: 100%;
@@ -567,8 +771,16 @@ input[type='number'] {
       padding: 0 8px;
       box-sizing: border-box;
       font-size: v.$font-size-small;
+      @media (max-width: 1200px) {
+        font-size: m.$font-size-small;
+      }
+      @media (max-width: 1060px) {
+        font-size: m.$font-size-base;
+      }
       transition: v.$transition;
       appearance: none;
+      @media (max-width: 768px) {
+      }
 
       &:focus {
         outline: none;
@@ -583,6 +795,19 @@ input[type='number'] {
       &.ng-invalid.ng-touched:focus {
         border-color: brown;
       }
+
+      &.grade-field {
+        border-color: v.$status-yellow-border;
+        &:focus {
+          border-color: goldenrod;
+        }
+      }
+
+      &.grade-field,
+      &.max-field,
+      &.weight-field {
+        text-align: center;
+      }
     }
 
     .form-button {
@@ -595,6 +820,9 @@ input[type='number'] {
       padding: 0 8px;
       box-sizing: border-box;
       font-size: v.$font-size-small;
+      @media (max-width: 768px) {
+        font-size: m.$font-size-small;
+      }
       transition: v.$transition;
 
       &:hover {
@@ -607,7 +835,7 @@ input[type='number'] {
         background-color: v.$status-yellow-bg;
         border-color: v.$status-yellow-border;
         &:hover {
-          border-color: darkgoldenrod;
+          border-color: v.$status-yellow-highlight;
         }
       }
 
@@ -616,7 +844,7 @@ input[type='number'] {
         background-color: v.$status-green-bg;
         border-color: v.$status-green-border;
         &:hover {
-          border-color: green;
+          border-color: v.$status-green-highlight;
         }
       }
 
@@ -625,7 +853,7 @@ input[type='number'] {
         background-color: v.$status-red-bg;
         border-color: v.$status-red-border;
         &:hover {
-          border-color: brown;
+          border-color: v.$status-red-highlight;
         }
       }
     }
@@ -642,6 +870,9 @@ input[type='number'] {
   padding: auto;
   box-sizing: border-box;
   font-size: v.$font-size-small;
+  @media (max-width: 768px) {
+    font-size: m.$font-size-small;
+  }
   transition: v.$transition;
   display: flex;
   justify-content: center;
@@ -689,6 +920,13 @@ input[type='number'] {
   background: v.$bg-tertiary;
   border: 2px dashed v.$text-main;
   border-radius: v.$border-radius-main;
-  min-height: calc(v.$control-height * 0.8) + 20px;
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  width: 100%;
+  min-height: calc(v.$control-height * 0.8) + 20px;
+  @media (max-width: 1060px) {
+    min-height: calc(v.$control-height * 0.8) + calc((v.$control-height) * 5) + calc(20px * 4);
+  }
+  @media (max-width: 768px) {
+    min-height: calc(v.$control-height * 0.8) + calc(v.$control-height * 6) + calc(20px * 5);
+  }
 }

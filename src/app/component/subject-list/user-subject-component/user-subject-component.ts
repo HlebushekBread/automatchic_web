@@ -1,4 +1,4 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import {
   GradeInfo,
   GradingTypeTranslation,
@@ -6,7 +6,7 @@ import {
   Subject,
 } from '../../../service/subject-service';
 import { CommonModule, DatePipe } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TaskTypeTranslation } from '../../../service/task-service';
 
 @Component({

@@ -5,16 +5,20 @@
         <div class="form-left">
           <div class="form-header">
             <label class="form-label">Название</label>
-            <input
-              class="form-input full-width"
+            <textarea
+              class="form-input textarea"
               formControlName="name"
               placeholder="Название предмета"
-            />
+            ></textarea>
           </div>
           <div class="form-content">
             <div class="form-column">
               <label class="form-label">Преподаватель</label>
-              <input class="form-input" formControlName="teacher" placeholder="Преподаватель" />
+              <textarea
+                class="form-input textarea"
+                formControlName="teacher"
+                placeholder="Преподаватель"
+              ></textarea>
               <label class="form-label">Описание</label>
               <textarea
                 class="form-input description"
@@ -34,7 +38,7 @@
               <div class="form-group">
                 @for (field of gradeFields; track field.control) {
                   @if (!(field.hideForCredit && isGradingTypeCredit())) {
-                    <div style="display: flex; align-items: center; gap: 8px">
+                    <div class="group-element">
                       <input
                         class="hidden-radio"
                         type="radio"
@@ -135,82 +139,86 @@
 
       <!-- -------------------------------------------------------- -->
       <div class="task-section">
-        <div class="grading-info">
-          <div class="progress-container">
-            <div
-              class="segment seg-less"
-              [style.width.%]="(savedSubject().gradingMin / (savedSubject().gradingMax || 1)) * 100"
-            ></div>
-            <div
-              class="segment seg-min"
-              [style.width.%]="
-                ((savedSubject().grading3 - savedSubject().gradingMin) /
-                  (savedSubject().gradingMax || 1)) *
-                100
-              "
-            ></div>
-            <div
-              class="segment seg-3"
-              [style.width.%]="
-                ((savedSubject().grading4 - savedSubject().grading3) /
-                  (savedSubject().gradingMax || 1)) *
-                100
-              "
-            ></div>
-            <div
-              class="segment seg-4"
-              [style.width.%]="
-                ((savedSubject().grading5 - savedSubject().grading4) /
-                  (savedSubject().gradingMax || 1)) *
-                100
-              "
-            ></div>
-            <div
-              class="segment seg-5"
-              [style.width.%]="
-                ((savedSubject().gradingMax - savedSubject().grading5) /
-                  (savedSubject().gradingMax || 1)) *
-                100
-              "
-            ></div>
+        <div class="grading-wrapper">
+          <div class="grading-info">
+            <div class="progress-container">
+              <div
+                class="segment seg-less"
+                [style.width.%]="
+                  (savedSubject().gradingMin / (savedSubject().gradingMax || 1)) * 100
+                "
+              ></div>
+              <div
+                class="segment seg-min"
+                [style.width.%]="
+                  ((savedSubject().grading3 - savedSubject().gradingMin) /
+                    (savedSubject().gradingMax || 1)) *
+                  100
+                "
+              ></div>
+              <div
+                class="segment seg-3"
+                [style.width.%]="
+                  ((savedSubject().grading4 - savedSubject().grading3) /
+                    (savedSubject().gradingMax || 1)) *
+                  100
+                "
+              ></div>
+              <div
+                class="segment seg-4"
+                [style.width.%]="
+                  ((savedSubject().grading5 - savedSubject().grading4) /
+                    (savedSubject().gradingMax || 1)) *
+                  100
+                "
+              ></div>
+              <div
+                class="segment seg-5"
+                [style.width.%]="
+                  ((savedSubject().gradingMax - savedSubject().grading5) /
+                    (savedSubject().gradingMax || 1)) *
+                  100
+                "
+              ></div>
 
-            <div
-              class="cursor"
-              [style.left.%]="
-                Math.min((currentScore() / (savedSubject().gradingMax || 1)) * 100, 100)
-              "
-            ></div>
+              <div
+                class="cursor"
+                [style.left.%]="
+                  Math.min((currentScore() / (savedSubject().gradingMax || 1)) * 100, 100)
+                "
+              ></div>
+            </div>
+            <div class="grading-summary">
+              <div
+                class="grade-badge"
+                [class.smaller]="gradeInfo[currentGrade()].compactTranslation.length > 2"
+                [style.background-color]="gradeInfo[currentGrade()].color"
+                [style.color]="gradeInfo[currentGrade()].text"
+              >
+                {{ gradeInfo[currentGrade()].compactTranslation }}
+              </div>
+              <div class="score-summary">
+                <div class="current-score">
+                  <span>{{ currentScore() }} / {{ savedSubject().gradingMax }}</span>
+                </div>
+                <div class="goal-text">
+                  Цель:
+                  <span [style.color]="gradeInfo[savedSubject().targetGrade + 2].color">{{
+                    gradeInfo[savedSubject().targetGrade + 2].translation
+                  }}</span>
+                  -
+                  @if (missingScore() > 0) {
+                    осталось <span class="active-text">{{ missingScore() }}</span>
+                  } @else {
+                    <span class="active-text">цель достигнута!</span>
+                  }
+                </div>
+              </div>
+            </div>
           </div>
           <button class="recalculate-button" (click)="recalculate()">Пересчитать максимум</button>
-          <div class="grading-summary">
-            <div
-              class="grade-badge"
-              [class.smaller]="gradeInfo[currentGrade()].compactTranslation.length > 2"
-              [style.background-color]="gradeInfo[currentGrade()].color"
-              [style.color]="gradeInfo[currentGrade()].text"
-            >
-              {{ gradeInfo[currentGrade()].compactTranslation }}
-            </div>
-            <div class="score-summary">
-              <div class="current-score">
-                <span>{{ currentScore() }} / {{ savedSubject().gradingMax }}</span>
-              </div>
-              <div class="goal-text">
-                Цель:
-                <span [style.color]="gradeInfo[savedSubject().targetGrade + 2].color">{{
-                  gradeInfo[savedSubject().targetGrade + 2].translation
-                }}</span>
-                -
-                @if (missingScore() > 0) {
-                  осталось <span class="active-text">{{ missingScore() }}</span>
-                } @else {
-                  <span class="active-text">цель достигнута!</span>
-                }
-              </div>
-            </div>
-          </div>
         </div>
-        <div [formGroup]="taskGroup">
+        <div [formGroup]="taskGroup" style="display: flex; justify-content: center">
           <div
             class="task-list"
             formArrayName="taskForms"
@@ -230,26 +238,75 @@
               </div>
             </div>
             @for (form of taskForms.controls; track form.getRawValue().id || $index) {
-              <div class="task-container" cdkDrag cdkDragLockAxis="y">
+              <div
+                class="task-container"
+                cdkDrag
+                cdkDragLockAxis="y"
+                [cdkDragDisabled]="taskForms.controls.length < 2"
+              >
                 <div class="drag-placeholder" *cdkDragPlaceholder></div>
                 <form class="task-row" [formGroupName]="$index">
                   <div class="drag-handle" cdkDragHandle>⋮⋮⋮</div>
-                  <input
-                    class="form-input"
-                    type="text"
-                    formControlName="name"
-                    placeholder="Название"
-                  />
-                  <select class="form-input" formControlName="type">
-                    @for (type of taskTypes; track type) {
-                      <option [value]="type">{{ taskTypeTranslation[type] }}</option>
-                    }
-                  </select>
-                  <input class="form-input" type="datetime-local" formControlName="dueDate" />
-                  <input class="form-input" type="number" formControlName="receivedGrade" />
-                  <input class="form-input" type="number" formControlName="maxGrade" />
-                  <input class="form-input" type="number" formControlName="gradeWeight" />
-                  <button class="form-button delete" type="button" (click)="onDeleteTask($index)">
+                  <div class="label-wrapper name-field">
+                    <label>Название</label>
+                    <input
+                      class="form-input name-field"
+                      type="text"
+                      formControlName="name"
+                      placeholder="Название"
+                    />
+                  </div>
+                  <div class="label-wrapper type-field">
+                    <label>Тип задания</label>
+                    <select class="form-input type-field" formControlName="type">
+                      @for (type of taskTypes; track type) {
+                        <option [value]="type">{{ taskTypeTranslation[type] }}</option>
+                      }
+                    </select>
+                  </div>
+                  <div class="label-wrapper date-field">
+                    <label>Дата сдачи</label>
+                    <input
+                      class="form-input date-field"
+                      type="datetime-local"
+                      formControlName="dueDate"
+                    />
+                  </div>
+                  <div class="label-wrapper grade-field">
+                    <label>Оц.</label>
+                    <input
+                      class="form-input grade-field"
+                      type="number"
+                      formControlName="receivedGrade"
+                    />
+                  </div>
+                  <div class="label-wrapper max-field">
+                    <label>Макс.</label>
+                    <div class="prefix-wrapper">
+                      Из
+                      <input
+                        class="form-input max-field"
+                        type="number"
+                        formControlName="maxGrade"
+                      />
+                    </div>
+                  </div>
+                  <div class="label-wrapper weight-field">
+                    <label>Вес</label>
+                    <div class="prefix-wrapper">
+                      X
+                      <input
+                        class="form-input weight-field"
+                        type="number"
+                        formControlName="gradeWeight"
+                      />
+                    </div>
+                  </div>
+                  <button
+                    class="form-button delete delete-field"
+                    type="button"
+                    (click)="onDeleteTask($index)"
+                  >
                     Удалить
                   </button>
                 </form>

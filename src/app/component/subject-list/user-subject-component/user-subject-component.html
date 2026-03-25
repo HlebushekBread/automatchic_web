@@ -22,7 +22,7 @@
 
   <section class="tasks-deadline">
     <span class="title">Ближайшие задания</span>
-    @if (subject().tasks.length > 0) {
+    @if (upcomingTasks().length > 0) {
       @for (task of upcomingTasks(); track task.id) {
         <div class="task-row">
           <span class="task-name">{{ task.name }}</span>

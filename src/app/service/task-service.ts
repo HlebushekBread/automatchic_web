@@ -7,6 +7,15 @@ export const TaskTypeTranslation: Record<string, string> = {
   HOMEWORK: 'Домашняя работа',
   LABWORK: 'Лабораторная работа',
   TEST: 'Тест',
+
+  PROJECT: 'Проект',
+  PRESENTATION: 'Доклад',
+  EXAM: 'Экзамен',
+
+  PRACTICE: 'Практика',
+  PARTICIPATION: 'Активность',
+  ATTENDANCE: 'Посещаемость',
+  OTHER: 'Другое',
 };
 
 export interface Task {
