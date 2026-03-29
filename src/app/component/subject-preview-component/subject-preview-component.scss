@@ -97,7 +97,11 @@
   }
 
   .info-field {
+    display: flex;
+    align-items: center;
     height: v.$control-height;
+    //background-color: v.$bg-main;
+    //border: 2px solid v.$bg-tertiary;
     border-radius: v.$border-radius-secondary;
     color: v.$text-active;
     box-sizing: border-box;
@@ -114,6 +118,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      background-color: v.$bg-main;
+      //border: 2px solid v.$bg-tertiary;
       width: 50px;
     }
 
@@ -302,6 +308,8 @@
       width: 100%;
       height: calc(v.$control-height * 0.8);
       background-color: v.$bg-main;
+      //border: 2px solid v.$bg-tertiary;
+      border-radius: v.$border-radius-secondary;
       color: v.$text-main;
       padding: 0 8px;
       box-sizing: border-box;
