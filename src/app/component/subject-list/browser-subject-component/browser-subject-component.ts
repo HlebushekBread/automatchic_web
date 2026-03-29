@@ -1,10 +1,10 @@
 import { Component, inject, input } from '@angular/core';
 import { GradingTypeTranslation, Subject } from '../../../service/subject-service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-browser-subject-component',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './browser-subject-component.html',
   styleUrl: './browser-subject-component.scss',
 })

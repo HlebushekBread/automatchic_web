@@ -1,1 +1,102 @@
-<p>subject-preview-component works!</p>
+<div class="preview-card">
+  @if (subject().id !== 0) {
+    @if (!errorMessage()) {
+      <div class="subject-info">
+        <div class="info-left">
+          <div class="info-header">
+            <label class="info-label">Название</label>
+            <span class="info-field">{{ subject().name }}</span>
+          </div>
+          <div class="info-content">
+            <div class="info-column">
+              <label class="info-label">Преподаватель</label>
+              <span class="info-field">{{ subject().teacher || 'Преподаватель не указан' }}</span>
+              <label class="info-label">Описание</label>
+              <span class="info-field description">{{ subject().description }}</span>
+            </div>
+
+            <div class="info-column">
+              <label class="info-label">Оценивание</label>
+              <span class="info-field">{{ gradingTypeTranslation[subject().gradingType] }}</span>
+
+              <div class="info-group">
+                @for (field of gradeFields; track field.grade) {
+                  @if (!(field.hideForCredit && subject().gradingType == 'CREDIT')) {
+                    <div class="group-element">
+                      <label
+                        class="grade-badge"
+                        [class.smaller]="gradeInfo[field.grade + 2].thresholdTranslation.length > 2"
+                        [style]="
+                          '--grade-color:' +
+                          gradeInfo[field.grade + 2].color +
+                          '; --grade-text:' +
+                          gradeInfo[field.grade + 2].text +
+                          '; border: 2px solid var(--grade-color);'
+                        "
+                        [style.background-color]="gradeInfo[0].color"
+                        [style.color]="gradeInfo[0].text"
+                        [for]="'radio' + field.grade"
+                      >
+                        {{ gradeInfo[field.grade + 2].thresholdTranslation }}
+                      </label>
+
+                      <span class="info-field grading">{{ field.grading }}</span>
+                    </div>
+                  }
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-column actions">
+          <div></div>
+          <div class="button-group">
+            <button type="button" class="submit-btn edit" (click)="onCopy()">Скопировать</button>
+          </div>
+        </div>
+      </div>
+      <div class="task-section">
+        <div class="task-list">
+          <div class="task-container">
+            <div class="task-row">
+              <span class="table-label">Название</span>
+              <span class="table-label">Тип</span>
+              <span class="table-label">Дата сдачи</span>
+              <span class="table-label">Макс.</span>
+              <span class="table-label">Вес</span>
+            </div>
+          </div>
+          @for (task of subject().tasks; track task) {
+            <div class="task-container">
+              <div class="task-row">
+                <div class="label-wrapper name-field">
+                  <label>Название</label>
+                  <span class="task-span name-field">{{ task.name }}</span>
+                </div>
+                <div class="label-wrapper type-field">
+                  <label>Тип</label>
+                  <span class="task-span type-field">{{ task.type }}</span>
+                </div>
+                <div class="label-wrapper date-field">
+                  <label>Дата сдачи</label>
+                  <span class="task-span date-field"
+                    >{{ task.dueDate | date: 'dd.MM' }} ({{ task.dueDate | date: 'EE' }})</span
+                  >
+                </div>
+                <div class="label-wrapper max-field">
+                  <label>Макс.</label>
+                  <span class="task-span max-field">{{ task.maxGrade }}</span>
+                </div>
+                <div class="label-wrapper weight-field">
+                  <label>Вес</label>
+                  <span class="task-span weight-field">{{ task.gradeWeight }}</span>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  }
+</div>

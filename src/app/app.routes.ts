@@ -3,6 +3,7 @@ import { ProfileComponent } from './component/profile-component/profile-componen
 import { SubjectList } from './component/subject-list/subject-list';
 import { authGuard } from './util/auth.guard';
 import { SubjectViewComponent } from './component/subject-view-component/subject-view-component';
+import { SubjectPreviewComponent } from './component/subject-preview-component/subject-preview-component';
 
 export const routes: Routes = [
   {
@@ -22,6 +23,11 @@ export const routes: Routes = [
     component: SubjectList,
     canActivate: [authGuard],
     data: { mode: 'view' },
+  },
+  {
+    path: 'subjects/browse/:id',
+    pathMatch: 'full',
+    component: SubjectPreviewComponent,
   },
   {
     path: 'subjects/view/:id',

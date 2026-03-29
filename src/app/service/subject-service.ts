@@ -142,6 +142,10 @@ export class SubjectService {
     return this.http.put<{ id: number }>(`${environment.apiUrl}/subjects/save`, data);
   }
 
+  copySubject(id: number): Observable<{ id: number }> {
+    return this.http.get<{ id: number }>(`${environment.apiUrl}/subjects/copy/${id}`);
+  }
+
   deleteSubject(id: number): Observable<void> {
     return this.http.delete<void>(`${environment.apiUrl}/subjects/delete/${id}`);
   }

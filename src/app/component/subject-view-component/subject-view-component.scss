@@ -161,6 +161,7 @@
 
     &:disabled {
       background-color: transparent;
+      color: v.$text-active;
       cursor: default;
       font-weight: 500;
     }
@@ -792,8 +793,6 @@ input[type='number'] {
       }
       transition: v.$transition;
       appearance: none;
-      @media (max-width: 768px) {
-      }
 
       &:focus {
         outline: none;
