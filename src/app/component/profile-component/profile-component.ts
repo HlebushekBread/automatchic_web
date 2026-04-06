@@ -22,6 +22,7 @@ export class ProfileComponent implements OnInit {
   readonly tokenGroup = signal(this.authService.getTokenGroup());
 
   isEnabled = signal(false);
+  timeLeft = signal('');
 
   userForm!: FormGroup;
   savedUser = signal<{ fullName: string; group: string }>({
@@ -47,6 +48,17 @@ export class ProfileComponent implements OnInit {
     this.userForm = this.formBuilder.group({
       fullName: [null],
       group: [null],
+    });
+  }
+
+  onResend() {
+    this.authService.resendConfirm().subscribe({
+      next: () => {
+        this.timeLeft.set('Письмо отправлено');
+      },
+      error: () => {
+        this.timeLeft.set('Подождите 3 минуты');
+      },
     });
   }
 

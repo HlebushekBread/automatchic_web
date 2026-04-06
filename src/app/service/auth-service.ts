@@ -43,6 +43,10 @@ export class AuthService {
     return this.http.get<void>(`${environment.apiUrl}/auth/confirm/${token}`);
   }
 
+  resendConfirm(): Observable<void> {
+    return this.http.get<void>(`${environment.apiUrl}/auth/resend`);
+  }
+
   getTokenPayload() {
     const token = localStorage.getItem(this.STORAGE_KEY);
     if (!token) {

@@ -3,13 +3,16 @@
 } @else {
   <div class="main-wrapper">
     @if (!isEnabled()) {
-      <button class="warning">
+      <button class="warning" (click)="onResend()">
         Подтвердите аккаунт,<br />
         иначе он будет удален <br />
         в течение одного дня. <br />
         Письмо отправлено на почту<br />
         (если она существует) <br />
-        <!-- <b style="padding: 0">Отправить письмо повторно</b> -->
+        <b style="padding: 0">Отправить письмо повторно</b>
+        @if (timeLeft()) {
+          {{ timeLeft() }}
+        }
       </button>
     }
     <form class="main-container" [formGroup]="userForm">

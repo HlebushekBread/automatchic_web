@@ -46,9 +46,15 @@
   border: 2px solid v.$status-yellow-border;
   border-radius: v.$border-radius-secondary;
   font-size: v.$font-size-base;
+  transition: v.$transition;
 
   @media (max-width: 768px) {
     font-size: m.$font-size-base;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: v.$status-yellow-border;
+    border-color: transparent;
   }
 }
 
