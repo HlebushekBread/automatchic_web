@@ -61,7 +61,19 @@
 
     @if (errorMessage()) {
       <div class="error">{{ errorMessage() }}</div>
-      <button class="submit-btn" type="button">Забыли пароль?</button>
+      <button
+        class="submit-btn"
+        type="button"
+        [disabled]="isResetDisabled()"
+        (click)="onForgotPassword()"
+      >
+        Забыли пароль?
+      </button>
+      @if (warningMessage()) {
+        <span style="display: flex; align-items: center; justify-content: center">
+          {{ warningMessage() }}
+        </span>
+      }
     }
     <span class="mid-span">Или</span>
     <button

@@ -39,12 +39,20 @@ export class AuthService {
     localStorage.removeItem(this.STORAGE_KEY);
   }
 
-  confirm(token: string): Observable<void> {
-    return this.http.get<void>(`${environment.apiUrl}/auth/confirm/${token}`);
-  }
-
   resendConfirm(): Observable<void> {
     return this.http.get<void>(`${environment.apiUrl}/auth/resend`);
+  }
+
+  confirm(token: string): Observable<void> {
+    return this.http.post<void>(`${environment.apiUrl}/auth/confirm`, token);
+  }
+
+  forgotPassword(email: string): Observable<void> {
+    return this.http.post<void>(`${environment.apiUrl}/auth/forgot-password`, email);
+  }
+
+  resetPassword(reqiest: { token: string; password: string }): Observable<void> {
+    return this.http.post<void>(`${environment.apiUrl}/auth/reset-password`, reqiest);
   }
 
   getTokenPayload() {

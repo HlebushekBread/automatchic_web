@@ -67,5 +67,54 @@ export class AuthForm {
     }
   }
 
-  text = signal(this.authService.getTokenAuthorities());
+  warningMessage = signal('Отправить письмо');
+
+  onForgotPassword() {
+    if (this.loginForm.value.username) {
+      this.authService.forgotPassword(this.loginForm.value.username).subscribe({
+        next: () => {
+          this.warningMessage.set('Письмо отправлено');
+        },
+        error: (error) => {
+          if (error.status == 404) {
+            this.warningMessage.set('Пользователя не существует');
+          } else if (error.status == 429) {
+            const timeMatch = error.error.message.match(/\d{2}:\d{2}/);
+            if (timeMatch) {
+              const [minutes, seconds] = timeMatch[0].split(':').map(Number);
+              const totalSeconds = minutes * 60 + seconds;
+              this.startCountdown(totalSeconds + 1);
+            }
+          }
+        },
+      });
+    }
+  }
+
+  private timerId?: ReturnType<typeof setInterval>;
+  isResetDisabled = signal(false);
+
+  startCountdown(seconds: number) {
+    this.isResetDisabled.set(true);
+
+    if (this.timerId) clearInterval(this.timerId);
+
+    this.timerId = setInterval(() => {
+      seconds--;
+
+      if (seconds <= 0) {
+        this.warningMessage.set('Отправить письмо');
+        this.isResetDisabled.set(false);
+        clearInterval(this.timerId);
+        return;
+      }
+
+      const m = Math.floor(seconds / 60)
+        .toString()
+        .padStart(2, '0');
+      const s = (seconds % 60).toString().padStart(2, '0');
+
+      this.warningMessage.set(`Повторите через: ${m}:${s}`);
+    }, 1000);
+  }
 }

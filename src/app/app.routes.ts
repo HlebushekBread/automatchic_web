@@ -5,6 +5,7 @@ import { authGuard } from './util/auth.guard';
 import { SubjectViewComponent } from './component/subject-view-component/subject-view-component';
 import { SubjectPreviewComponent } from './component/subject-preview-component/subject-preview-component';
 import { EmailConfirmComponent } from './component/email-confirm-component/email-confirm-component';
+import { PasswordResetComponent } from './component/password-reset-component/password-reset-component';
 
 export const routes: Routes = [
   {
@@ -39,5 +40,9 @@ export const routes: Routes = [
   {
     path: 'confirm',
     component: EmailConfirmComponent,
+  },
+  {
+    path: 'reset',
+    component: PasswordResetComponent,
   },
 ];
