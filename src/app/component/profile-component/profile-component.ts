@@ -22,7 +22,8 @@ export class ProfileComponent implements OnInit {
   readonly tokenGroup = signal(this.authService.getTokenGroup());
 
   isEnabled = signal(false);
-  timeLeft = signal('');
+  warningMessage = signal('');
+  timeLeft = '';
 
   userForm!: FormGroup;
   savedUser = signal<{ fullName: string; group: string }>({
@@ -54,12 +55,49 @@ export class ProfileComponent implements OnInit {
   onResend() {
     this.authService.resendConfirm().subscribe({
       next: () => {
-        this.timeLeft.set('Письмо отправлено');
+        this.warningMessage.set('Письмо отправлено');
       },
-      error: () => {
-        this.timeLeft.set('Подождите 3 минуты');
+      error: (error) => {
+        if (error.status == 409) {
+          this.warningMessage.set('Уже подтвержден');
+          window.location.reload();
+        } else if (error.status == 429) {
+          const timeMatch = error.error.message.match(/\d{2}:\d{2}/);
+          if (timeMatch) {
+            const [minutes, seconds] = timeMatch[0].split(':').map(Number);
+            const totalSeconds = minutes * 60 + seconds;
+            this.startCountdown(totalSeconds + 1);
+          }
+        }
       },
     });
+  }
+
+  private timerId?: ReturnType<typeof setInterval>;
+  isResendDisabled = signal(false);
+
+  startCountdown(seconds: number) {
+    this.isResendDisabled.set(true);
+
+    if (this.timerId) clearInterval(this.timerId);
+
+    this.timerId = setInterval(() => {
+      seconds--;
+
+      if (seconds <= 0) {
+        this.warningMessage.set('');
+        this.isResendDisabled.set(false);
+        clearInterval(this.timerId);
+        return;
+      }
+
+      const m = Math.floor(seconds / 60)
+        .toString()
+        .padStart(2, '0');
+      const s = (seconds % 60).toString().padStart(2, '0');
+
+      this.warningMessage.set(`Повторите через: ${m}:${s}`);
+    }, 1000);
   }
 
   isEdit = signal(false);
