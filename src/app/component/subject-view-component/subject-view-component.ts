@@ -8,10 +8,10 @@ import {
   untracked,
 } from '@angular/core';
 import {
+  FullSubject,
   GradeInfo,
   GradingTypeTranslation,
   PublicityTranslation,
-  Subject,
   SubjectDto,
   SubjectService,
 } from '../../service/subject-service';
@@ -171,7 +171,7 @@ export class SubjectViewComponent implements OnInit {
     return hasError ? { gradingChain: errors } : null;
   };
 
-  private patchSubjectForm(subject: Subject | SubjectDto) {
+  private patchSubjectForm(subject: FullSubject | SubjectDto) {
     this.subjectForm.patchValue({
       id: subject.id,
       name: subject.name,

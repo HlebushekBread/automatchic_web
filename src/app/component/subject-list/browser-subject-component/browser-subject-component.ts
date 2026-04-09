@@ -1,5 +1,5 @@
 import { Component, inject, input } from '@angular/core';
-import { GradingTypeTranslation, Subject } from '../../../service/subject-service';
+import { BasicSubject, GradingTypeTranslation } from '../../../service/subject-service';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
@@ -13,5 +13,5 @@ export class BrowserSubjectComponent {
 
   readonly gradingTypeTranslation = GradingTypeTranslation;
 
-  subject = input.required<Subject>();
+  subject = input.required<BasicSubject>();
 }

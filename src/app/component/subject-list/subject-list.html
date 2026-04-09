@@ -51,9 +51,9 @@
   <main class="subjects-grid" [class.view]="mode() == 'view'" [class.browse]="mode() == 'browse'">
     @for (subject of filteredSubjects(); track subject.id) {
       @if (mode() == 'view') {
-        <app-user-subject-component [subject]="subject"></app-user-subject-component>
+        <app-user-subject-component [subject]="$any(subject)"></app-user-subject-component>
       } @else {
-        <app-browser-subject-component [subject]="subject"></app-browser-subject-component>
+        <app-browser-subject-component [subject]="$any(subject)"></app-browser-subject-component>
       }
     } @empty {
       <div class="message">

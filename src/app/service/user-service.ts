@@ -8,7 +8,6 @@ export const RoleTranslation: Record<string, string> = {
 };
 
 export interface User {
-  id: number;
   username: string;
   fullName: string;
   group: string;

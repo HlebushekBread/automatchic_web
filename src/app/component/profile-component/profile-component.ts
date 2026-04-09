@@ -4,7 +4,6 @@ import { AuthForm } from './auth-form/auth-form';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../service/user-service';
-import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -126,6 +125,7 @@ export class ProfileComponent implements OnInit {
         this.savedUser.set(formValue);
         this.userForm.patchValue(formValue);
         this.authService.doLoginUser(response);
+        window.location.reload();
       },
     });
   }

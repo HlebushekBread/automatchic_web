@@ -265,7 +265,7 @@
     }
 
     &:disabled {
-      opacity: 0.5;
+      background-color: v.$bg-secondary;
       cursor: not-allowed;
       &:hover {
         border-color: v.$bg-tertiary;

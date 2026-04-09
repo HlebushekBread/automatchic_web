@@ -77,7 +77,7 @@ export const GradeInfo: Record<
   },
 };
 
-export interface Subject {
+export interface FullSubject {
   id: number;
   name: string;
   teacher: string;
@@ -93,6 +93,17 @@ export interface Subject {
   user: User;
   tasks: Task[];
   links: Link[];
+}
+
+export interface BasicSubject {
+  id: number;
+  name: string;
+  teacher: string;
+  gradingType: string;
+  publicity: string;
+  user: User;
+  tasksAmount: number;
+  linksAmount: number;
 }
 
 export interface SubjectDto {
@@ -122,20 +133,20 @@ export interface Link {
 export class SubjectService {
   private http = inject(HttpClient);
 
-  getById(preview: boolean, id: number): Observable<Subject> {
+  getById(preview: boolean, id: number): Observable<FullSubject> {
     if (preview) {
-      return this.http.get<Subject>(`${environment.apiUrl}/subjects/preview/${id}`);
+      return this.http.get<FullSubject>(`${environment.apiUrl}/subjects/preview/${id}`);
     } else {
-      return this.http.get<Subject>(`${environment.apiUrl}/subjects/view/${id}`);
+      return this.http.get<FullSubject>(`${environment.apiUrl}/subjects/view/${id}`);
     }
   }
 
-  getPublicSubjects(): Observable<Subject[]> {
-    return this.http.get<Subject[]>(`${environment.apiUrl}/subjects/public`);
+  getPublicSubjects(): Observable<BasicSubject[]> {
+    return this.http.get<BasicSubject[]>(`${environment.apiUrl}/subjects/public`);
   }
 
-  getUserSubjects(): Observable<Subject[]> {
-    return this.http.get<Subject[]>(`${environment.apiUrl}/subjects/user`);
+  getUserSubjects(): Observable<FullSubject[]> {
+    return this.http.get<FullSubject[]>(`${environment.apiUrl}/subjects/user`);
   }
 
   saveSubject(data: SubjectDto): Observable<{ id: number }> {

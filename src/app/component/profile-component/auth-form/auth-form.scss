@@ -85,7 +85,7 @@
 .submit-btn {
   height: v.$control-height;
   margin-top: 8px;
-  background-color: v.$bg-secondary;
+  background-color: v.$bg-main;
   color: v.$text-main;
   border: 2px solid v.$bg-tertiary;
   border-radius: v.$border-radius-secondary;
@@ -103,7 +103,7 @@
   }
 
   &:disabled {
-    opacity: 0.4;
+    background-color: v.$bg-secondary;
     cursor: not-allowed;
   }
 
@@ -114,11 +114,6 @@
   &.forgot {
     height: fit-content;
     padding: 15px 0;
-
-    &:disabled {
-      opacity: 1;
-      border: none;
-    }
   }
 }
 

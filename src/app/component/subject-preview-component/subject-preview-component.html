@@ -50,8 +50,23 @@
         </div>
 
         <div class="info-column actions">
+          <div class="author-info">
+            <span class="author-label">Автор записи</span>
+            <div class="user-info">
+              <div class="user-avatar">
+                {{
+                  subject().user.fullName ? subject().user.fullName[0] : subject().user.username[0]
+                }}
+              </div>
+              <div class="user-details">
+                <span class="user-name">{{
+                  subject().user.fullName ? subject().user.fullName : subject().user.username
+                }}</span>
+                <span class="user-meta">{{ subject().user.group }}</span>
+              </div>
+            </div>
+          </div>
           @if (!isAuthenticated) {
-            <div></div>
             <div class="info-label" style="text-align: center">
               Чтобы иметь возможность <br />
               скопировать себе дисциплину, <br />
@@ -61,10 +76,31 @@
               <button type="button" class="submit-btn edit" (click)="onLogin()">Войти</button>
             </div>
           } @else {
-            <div></div>
-            <div class="button-group">
-              <button type="button" class="submit-btn edit" (click)="onCopy()">Скопировать</button>
-            </div>
+            @if (isAuthorView()) {
+              <div class="info-label" style="text-align: center">
+                Это ваша запись. <br />
+                Вы не можете ее скопировать, <br />
+                но можете перейти к просмотру.
+              </div>
+              <div class="button-group">
+                <button type="button" class="submit-btn edit" (click)="onGoToView()">
+                  Перейти
+                </button>
+              </div>
+            } @else {
+              <div class="info-label" style="text-align: center">
+                Скопировав себе дисциплину, <br />
+                вы получите независимую копию, <br />
+                включающую все поля, <br />
+                кроме целевой оценки и <br />
+                баллов, отмеченных автором. <br />
+              </div>
+              <div class="button-group">
+                <button type="button" class="submit-btn edit" (click)="onCopy()">
+                  Скопировать
+                </button>
+              </div>
+            }
           }
         </div>
       </div>

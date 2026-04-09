@@ -1,13 +1,13 @@
 import { Component, computed, input } from '@angular/core';
 import {
+  FullSubject,
   GradeInfo,
   GradingTypeTranslation,
   PublicityTranslation,
-  Subject,
 } from '../../../service/subject-service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { TaskTypeTranslation } from '../../../service/task-service';
+import { Task, TaskTypeTranslation } from '../../../service/task-service';
 
 @Component({
   selector: 'app-user-subject-component',
@@ -24,20 +24,21 @@ export class UserSubjectComponent {
 
   readonly gradeInfo = GradeInfo;
 
-  subject = input.required<Subject>();
+  subject = input.required<FullSubject>();
 
   upcomingTasks = computed(() => {
     const now = new Date();
 
     return this.subject()
-      .tasks.filter((task) => new Date(task.dueDate) >= now)
-      .sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime())
+      .tasks.filter((task: Task) => new Date(task.dueDate) >= now)
+      .sort((a: Task, b: Task) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime())
       .slice(0, 4);
   });
 
   getCurrentScore(): number {
     return this.subject().tasks.reduce(
-      (sum, task) => sum + (Number(task.receivedGrade) || 0) * (Number(task.gradeWeight) || 1),
+      (sum: number, task: Task) =>
+        sum + (Number(task.receivedGrade) || 0) * (Number(task.gradeWeight) || 1),
       0,
     );
   }

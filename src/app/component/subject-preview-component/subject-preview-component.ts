@@ -1,9 +1,9 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import {
+  FullSubject,
   GradeInfo,
   GradingTypeTranslation,
   PublicityTranslation,
-  Subject,
   SubjectService,
 } from '../../service/subject-service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -41,7 +41,7 @@ export class SubjectPreviewComponent implements OnInit {
   gradeFields: { grade: number; grading: number; hideForCredit: boolean }[] = [];
 
   errorMessage = signal('');
-  subject = signal<Subject>({
+  subject = signal<FullSubject>({
     id: 0,
     name: '',
     teacher: '',
@@ -55,7 +55,6 @@ export class SubjectPreviewComponent implements OnInit {
     targetGrade: 0,
     publicity: '',
     user: {
-      id: 0,
       username: '',
       fullName: '',
       group: '',
@@ -64,6 +63,10 @@ export class SubjectPreviewComponent implements OnInit {
     tasks: [],
     links: [],
   });
+
+  isAuthorView = computed(
+    () => this.authService.getTokenUsername() === this.subject().user.username,
+  );
 
   ngOnInit() {
     this.route.paramMap
@@ -102,9 +105,13 @@ export class SubjectPreviewComponent implements OnInit {
     });
   }
 
-  onLogin() {    
+  onGoToView() {
+    this.router.navigate([this.router.url.replace('browse', 'view')]);
+  }
+
+  onLogin() {
     this.router.navigate(['/profile'], {
-      queryParams: { next: this.router.url } 
+      queryParams: { next: this.router.url },
     });
   }
 }
