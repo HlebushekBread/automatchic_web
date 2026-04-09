@@ -6,23 +6,17 @@
   align-items: flex-start;
   justify-content: center;
   width: 100%;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding: 20px 10px;
   box-sizing: border-box;
   height: calc(100vh - v.$header-height);
   overflow-y: auto;
   @media (max-width: 768px) {
     height: calc(100vh - m.$header-height - m.$navbar-height);
   }
-
-  &::-webkit-scrollbar {
-    display: none;
-    width: 0;
-    height: 0;
-  }
 }
 
 .auth-card {
+  height: fit-content;
   width: 100%;
   max-width: 400px;
   background-color: v.$bg-secondary;
@@ -104,10 +98,6 @@
     font-size: m.$font-size-small;
   }
 
-  &.switch {
-    margin-top: 0;
-  }
-
   &:hover:not(:disabled) {
     background-color: v.$bg-tertiary;
   }
@@ -115,6 +105,20 @@
   &:disabled {
     opacity: 0.4;
     cursor: not-allowed;
+  }
+
+  &.switch {
+    margin-top: 0;
+  }
+
+  &.forgot {
+    height: fit-content;
+    padding: 15px 0;
+
+    &:disabled {
+      opacity: 1;
+      border: none;
+    }
   }
 }
 

@@ -9,8 +9,7 @@
         в течение одного дня. <br />
         Письмо отправлено на почту<br />
         (если она существует) <br />
-        <b style="padding: 0">Отправить письмо повторно</b>
-        {{ warningMessage() || '' }}
+        <b style="padding: 0">{{ warningMessage() || 'Отправить письмо повторно' }}</b>
       </button>
     }
     <form class="main-container" [formGroup]="userForm">

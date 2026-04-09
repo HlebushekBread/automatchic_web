@@ -1,7 +1,7 @@
 <div class="auth-card">
   <form [formGroup]="loginForm" class="auth-form">
     <div class="form-group">
-      <label class="form-label" for="username">Логин</label>
+      <label class="form-label" for="username">Логин (почта)</label>
       <input
         class="form-input"
         id="username"
@@ -12,7 +12,7 @@
     </div>
 
     <div class="form-group">
-      <label class="form-label" for="password">Пароль</label>
+      <label class="form-label" for="password">Пароль (6 или более символов)</label>
       <input
         class="form-input"
         id="password"
@@ -62,18 +62,16 @@
     @if (errorMessage()) {
       <div class="error">{{ errorMessage() }}</div>
       <button
-        class="submit-btn"
+        class="submit-btn forgot"
         type="button"
         [disabled]="isResetDisabled()"
         (click)="onForgotPassword()"
       >
-        Забыли пароль?
+        Забыли пароль?<br /><br />
+        @if (warningMessage()) {
+          <b>{{ warningMessage() }}</b>
+        }
       </button>
-      @if (warningMessage()) {
-        <span style="display: flex; align-items: center; justify-content: center">
-          {{ warningMessage() }}
-        </span>
-      }
     }
     <span class="mid-span">Или</span>
     <button

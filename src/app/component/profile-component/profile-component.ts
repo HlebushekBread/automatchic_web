@@ -4,6 +4,8 @@ import { AuthForm } from './auth-form/auth-form';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../service/user-service';
+import { ActivatedRoute } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-profile-component',
@@ -59,7 +61,7 @@ export class ProfileComponent implements OnInit {
       next: () => {
         this.warningMessage.set('Письмо отправлено');
       },
-      error: (error) => {
+      error: (error: HttpErrorResponse) => {
         if (error.status == 409) {
           this.warningMessage.set('Уже подтвержден');
           window.location.reload();

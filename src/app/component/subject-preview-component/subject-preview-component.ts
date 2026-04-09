@@ -102,7 +102,9 @@ export class SubjectPreviewComponent implements OnInit {
     });
   }
 
-  onLogin() {
-    this.router.navigate(['/profile']);
+  onLogin() {    
+    this.router.navigate(['/profile'], {
+      queryParams: { next: this.router.url } 
+    });
   }
 }

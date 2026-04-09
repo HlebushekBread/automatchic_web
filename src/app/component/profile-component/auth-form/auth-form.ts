@@ -3,7 +3,8 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { AuthService } from '../../../service/auth-service';
 import { CommonModule } from '@angular/common';
 import { take } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-auth-form',
@@ -14,6 +15,7 @@ import { Router } from '@angular/router';
 export class AuthForm {
   private authService = inject(AuthService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   loginForm = new FormGroup({
     username: new FormControl('', [Validators.required, Validators.email]),
@@ -26,6 +28,7 @@ export class AuthForm {
   isRegisterMode = signal(false);
 
   onLogin() {
+    const returnUrl = this.route.snapshot.queryParams['next'];
     this.errorMessage.set('');
     if (this.loginForm.valid) {
       this.authService
@@ -36,7 +39,12 @@ export class AuthForm {
         .pipe(take(1))
         .subscribe({
           next: () => {
-            window.location.reload();
+            const returnUrl = this.route.snapshot.queryParams['next'];
+            if (returnUrl) {
+              window.location.href = returnUrl;
+            } else {
+              window.location.reload();
+            }
           },
           error: () => {
             this.errorMessage.set('Неверные данные');
@@ -58,10 +66,15 @@ export class AuthForm {
         .pipe(take(1))
         .subscribe({
           next: () => {
-            window.location.reload();
+            const returnUrl = this.route.snapshot.queryParams['next'];
+            if (returnUrl) {
+              window.location.href = returnUrl;
+            } else {
+              window.location.reload();
+            }
           },
-          error: () => {
-            this.errorMessage.set('Пользователь существует');
+          error: (error: HttpErrorResponse) => {
+            this.errorMessage.set(error.error?.message || 'Ошибка сервера');
           },
         });
     }
@@ -75,7 +88,7 @@ export class AuthForm {
         next: () => {
           this.warningMessage.set('Письмо отправлено');
         },
-        error: (error) => {
+        error: (error: HttpErrorResponse) => {
           if (error.status == 404) {
             this.warningMessage.set('Пользователя не существует');
           } else if (error.status == 429) {
