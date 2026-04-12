@@ -1,20 +1,18 @@
-import { Component, Input, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import {
   GradingTypeTranslation,
   PublicityTranslation,
   SubjectService,
 } from '../../service/subject-service';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BrowserSubjectComponent } from '../subject-list/browser-subject-component/browser-subject-component';
 import { UserSubjectComponent } from '../subject-list/user-subject-component/user-subject-component';
-import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-subject-list',
   standalone: true,
-  imports: [FormsModule, BrowserSubjectComponent, UserSubjectComponent],
+  imports: [FormsModule, UserSubjectComponent],
   templateUrl: './subject-list.html',
   styleUrl: './subject-list.scss',
 })
@@ -22,21 +20,7 @@ export class SubjectList {
   private subjectService = inject(SubjectService);
   private router = inject(Router);
 
-  @Input('mode') set modeInput(value: 'browse' | 'view') {
-    this.mode.set(value);
-  }
-  mode = signal<'browse' | 'view'>('browse');
-
-  subjectList = toSignal(
-    toObservable(this.mode).pipe(
-      switchMap((mode) =>
-        mode === 'browse'
-          ? this.subjectService.getPublicSubjects()
-          : this.subjectService.getUserSubjects(),
-      ),
-    ),
-    { initialValue: [] },
-  );
+  subjectList = toSignal(this.subjectService.getUserSubjects(), { initialValue: [] });
 
   gradingTypeTranslation = GradingTypeTranslation;
   gradingTypes = Object.keys(this.gradingTypeTranslation);
@@ -96,8 +80,6 @@ export class SubjectList {
   });
 
   onCreate(name: string) {
-    if (this.mode() !== 'view') return;
-
     this.subjectService
       .saveSubject({
         id: 0,

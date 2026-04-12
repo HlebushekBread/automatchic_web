@@ -1,0 +1,46 @@
+<div class="top-panel">
+  <button class="mobile-filter-btn" (click)="isShowFilters.set(!isShowFilters())">
+    {{ isShowFilters() ? 'Закрыть фильтры' : 'Показать фильтры' }}
+  </button>
+</div>
+
+<div class="page-layout">
+  <aside [style.margin-bottom]="isShowFilters() ? '10px' : 0">
+    <div class="filters" [class.is-open]="isShowFilters()">
+      <div class="filter-group">
+        <label>Поиск</label>
+        <input
+          type="text"
+          [ngModel]="searchQuery()"
+          (ngModelChange)="searchQuery.set($event)"
+          placeholder="Начните воодить..."
+        />
+      </div>
+      <div class="filter-group">
+        <label>Тип оценивания</label>
+        <select [ngModel]="selectedType()" (ngModelChange)="selectedType.set($event)">
+          <option value="all">Все типы</option>
+          @for (type of gradingTypes; track type) {
+            <option [value]="type">{{ gradingTypeTranslation[type] }}</option>
+          }
+        </select>
+      </div>
+    </div>
+  </aside>
+
+  <main class="subjects-grid browse">
+    @for (subject of filteredSubjects(); track subject.id) {
+      <app-browser-subject-component [subject]="$any(subject)"></app-browser-subject-component>
+    } @empty {
+      <div class="message">
+        <p style="text-align: center; line-height: 1.6">
+          {{
+            subjectList().length == 0
+              ? 'Здесь появятся публичные дисциплины. Пока тут пусто.'
+              : 'Ничего не найдено.'
+          }}
+        </p>
+      </div>
+    }
+  </main>
+</div>

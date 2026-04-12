@@ -3,11 +3,9 @@
     {{ isShowFilters() ? 'Закрыть фильтры' : 'Показать фильтры' }}
   </button>
 
-  @if (mode() == 'view') {
-    <button class="mobile-filter-btn" (click)="isCreateModalOpen.set(true)">
-      Создать новую запись
-    </button>
-  }
+  <button class="mobile-filter-btn" (click)="isCreateModalOpen.set(true)">
+    Создать новую запись
+  </button>
 </div>
 
 <div class="page-layout">
@@ -31,38 +29,28 @@
           }
         </select>
       </div>
-      @if (mode() == 'view') {
-        <div class="filter-group">
-          <label>Публичность</label>
-          <select [ngModel]="selectedPublicity()" (ngModelChange)="selectedPublicity.set($event)">
-            <option value="all">Все типы</option>
-            @for (publicity of publicities; track publicity) {
-              <option [value]="publicity">{{ publicityTranslation[publicity] }}</option>
-            }
-          </select>
-        </div>
-      }
+      <div class="filter-group">
+        <label>Публичность</label>
+        <select [ngModel]="selectedPublicity()" (ngModelChange)="selectedPublicity.set($event)">
+          <option value="all">Все типы</option>
+          @for (publicity of publicities; track publicity) {
+            <option [value]="publicity">{{ publicityTranslation[publicity] }}</option>
+          }
+        </select>
+      </div>
     </div>
-    @if (mode() == 'view') {
-      <div class="filters button" (click)="isCreateModalOpen.set(true)">Создать новую запись</div>
-    }
+    <div class="filters button" (click)="isCreateModalOpen.set(true)">Создать новую запись</div>
   </aside>
 
-  <main class="subjects-grid" [class.view]="mode() == 'view'" [class.browse]="mode() == 'browse'">
+  <main class="subjects-grid view">
     @for (subject of filteredSubjects(); track subject.id) {
-      @if (mode() == 'view') {
-        <app-user-subject-component [subject]="$any(subject)"></app-user-subject-component>
-      } @else {
-        <app-browser-subject-component [subject]="$any(subject)"></app-browser-subject-component>
-      }
+      <app-user-subject-component [subject]="$any(subject)"></app-user-subject-component>
     } @empty {
       <div class="message">
         <p style="text-align: center; line-height: 1.6">
           {{
             subjectList().length == 0
-              ? 'Здесь появятся ' +
-                (mode() == 'view' ? 'созданные вами' : 'публичные') +
-                ' дисциплины. Пока тут пусто.'
+              ? 'Здесь появятся созданные вами дисциплины. Пока тут пусто.'
               : 'Ничего не найдено.'
           }}
         </p>
@@ -71,7 +59,7 @@
   </main>
 </div>
 
-@if (mode() == 'view' && isCreateModalOpen()) {
+@if (isCreateModalOpen()) {
   <div class="modal-overlay" (click)="isCreateModalOpen.set(false)">
     <div class="modal-content" (click)="$event.stopPropagation()">
       <h3>Создать новую запись</h3>

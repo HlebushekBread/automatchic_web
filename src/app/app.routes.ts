@@ -7,6 +7,7 @@ import { SubjectPreviewComponent } from './component/subject-preview-component/s
 import { EmailConfirmComponent } from './component/email-confirm-component/email-confirm-component';
 import { PasswordResetComponent } from './component/password-reset-component/password-reset-component';
 import { HomePage } from './component/home-page/home-page';
+import { SubjectBrowser } from './component/subject-browser/subject-browser';
 
 export const routes: Routes = [
   {
@@ -22,15 +23,13 @@ export const routes: Routes = [
   {
     path: 'subjects/browse',
     pathMatch: 'full',
-    component: SubjectList,
-    data: { mode: 'browse' },
+    component: SubjectBrowser,
   },
   {
     path: 'subjects/view',
     pathMatch: 'full',
     component: SubjectList,
     canActivate: [authGuard],
-    data: { mode: 'view' },
   },
   {
     path: 'subjects/browse/:id',
