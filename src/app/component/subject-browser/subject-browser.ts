@@ -1,8 +1,13 @@
-import { Component, computed, inject, signal } from '@angular/core';
-import { GradingTypeTranslation, SubjectService } from '../../service/subject-service';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
+import {
+  BasicSubject,
+  GradingTypeTranslation,
+  SubjectService,
+} from '../../service/subject-service';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { BrowserSubjectComponent } from './browser-subject-component/browser-subject-component';
+import { catchError, debounceTime, map, of, scan, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-subject-browser',
@@ -18,49 +23,54 @@ export class SubjectBrowser {
 
   searchQuery = signal('');
   selectedType = signal('all');
+  currentPage = signal(0);
 
   isShowFilters = signal(false);
 
-  subjectList = toSignal(this.subjectService.getPublicSubjects(), { initialValue: [] });
-
-  getAbbreviation(text: string): string {
-    if (!text) return '';
-    return text
-      .split(' ')
-      .filter((w) => w.length > 0)
-      .map((w) => w[0])
-      .join('')
-      .toUpperCase();
+  constructor() {
+    effect(() => {
+      this.searchQuery();
+      this.selectedType();
+      untracked(() => {
+        this.currentPage.set(0);
+        this.hasMore.set(true);
+      });
+    });
   }
 
-  normalize = (text: string) => text.toLowerCase().replace(/[.\s-]/g, '');
+  private params$ = toObservable(
+    computed(() => ({
+      query: this.searchQuery(),
+      gradingType: this.selectedType(),
+      page: this.currentPage(),
+    })),
+  );
 
-  filteredSubjects = computed(() => {
-    const query = this.normalize(this.searchQuery());
-    const type = this.selectedType();
-    const subjects = this.subjectList();
+  loadMore() {
+    this.currentPage.update((page) => page + 1);
+  }
 
-    if (!query && type === 'all') return subjects;
+  loading = signal(false);
+  hasMore = signal(true);
 
-    return subjects.filter((subject) => {
-      const matchesType = type === 'all' || subject.gradingType === type;
-
-      if (!matchesType) return false;
-      if (!query) return true;
-
-      const searchTarget = [
-        subject.name,
-        this.getAbbreviation(subject.name),
-        subject.teacher,
-        this.getAbbreviation(subject.teacher),
-        subject.user.fullName,
-        subject.user.username,
-        subject.user.group,
-      ]
-        .map(this.normalize)
-        .join('|');
-
-      return searchTarget.includes(query);
-    });
-  });
+  subjectList = toSignal(
+    this.params$.pipe(
+      debounceTime(300),
+      tap(() => this.loading.set(true)),
+      switchMap((p) =>
+        this.subjectService.getPublicSubjects(p.query, p.gradingType, p.page).pipe(
+          map((newData: BasicSubject[]) => {
+            if (newData.length < 12) this.hasMore.set(false);
+            return { newData, page: p.page };
+          }),
+          catchError(() => of({ newData: [] as BasicSubject[], page: p.page })),
+          tap(() => this.loading.set(false)),
+        ),
+      ),
+      scan((acc, { newData, page }) => {
+        return page === 0 ? newData : [...acc, ...newData];
+      }, [] as BasicSubject[]),
+    ),
+    { initialValue: [] },
+  );
 }

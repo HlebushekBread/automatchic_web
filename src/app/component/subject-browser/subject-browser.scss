@@ -46,15 +46,11 @@
   border: 2px solid v.$bg-tertiary;
   border-radius: v.$border-radius-main;
 
-  &.button {
+  &.loading {
     text-align: center;
     user-select: none;
     color: v.$text-main;
     transition: v.$transition;
-
-    &:hover {
-      background-color: v.$bg-tertiary;
-    }
   }
 
   .filter-group {
@@ -143,6 +139,17 @@
     border-radius: v.$border-radius-main;
     padding: 20px;
     box-sizing: border-box;
+
+    &.button {
+      text-align: center;
+      user-select: none;
+      color: v.$text-main;
+      transition: v.$transition;
+
+      &:hover {
+        background-color: v.$bg-tertiary;
+      }
+    }
   }
 }
 

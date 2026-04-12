@@ -72,6 +72,10 @@
     @media (max-width: 768px) {
       font-size: m.$font-size-small;
     }
+
+    .red-text {
+      color: v.$status-red-text;
+    }
   }
 
   .info-left {
@@ -288,9 +292,13 @@
       color: v.$status-yellow-text;
       background-color: v.$status-yellow-bg;
       border-color: v.$status-yellow-border;
-      &:hover {
+      &:hover:not(:disabled) {
         background-color: v.$status-yellow-border;
         border-color: transparent;
+      }
+      &:disabled {
+        border: none;
+        cursor: not-allowed;
       }
     }
   }

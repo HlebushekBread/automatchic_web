@@ -94,9 +94,18 @@
                 включающую все поля, <br />
                 кроме целевой оценки и <br />
                 баллов, отмеченных автором. <br />
+                @if (!canCopy()) {
+                  <br />
+                  <b class="red-text">У вас уже максимум дисциплин</b><br />
+                }
               </div>
               <div class="button-group">
-                <button type="button" class="submit-btn edit" (click)="onCopy()">
+                <button
+                  type="button"
+                  class="submit-btn edit"
+                  [disabled]="!canCopy()"
+                  (click)="onCopy()"
+                >
                   Скопировать
                 </button>
               </div>

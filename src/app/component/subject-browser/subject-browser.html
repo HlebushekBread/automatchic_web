@@ -29,18 +29,21 @@
   </aside>
 
   <main class="subjects-grid browse">
-    @for (subject of filteredSubjects(); track subject.id) {
+    @for (subject of subjectList(); track subject.id) {
       <app-browser-subject-component [subject]="$any(subject)"></app-browser-subject-component>
     } @empty {
       <div class="message">
-        <p style="text-align: center; line-height: 1.6">
-          {{
-            subjectList().length == 0
-              ? 'Здесь появятся публичные дисциплины. Пока тут пусто.'
-              : 'Ничего не найдено.'
-          }}
-        </p>
+        <p style="text-align: center; line-height: 1.6">Ничего не найдено.</p>
       </div>
+    }
+    @if (subjectList().length > 0) {
+      @if (loading()) {
+        <div class="message">Загрузка...</div>
+      } @else if (hasMore()) {
+        <button class="message button" (click)="loadMore()">Показать еще</button>
+      } @else {
+        <div class="message">Вы просмотрели все доступные дисциплины</div>
+      }
     }
   </main>
 </div>

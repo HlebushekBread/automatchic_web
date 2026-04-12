@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -141,8 +141,13 @@ export class SubjectService {
     }
   }
 
-  getPublicSubjects(): Observable<BasicSubject[]> {
-    return this.http.get<BasicSubject[]>(`${environment.apiUrl}/subjects/public`);
+  getPublicSubjects(query: string, type: string, page: number): Observable<BasicSubject[]> {
+    const params = new HttpParams()
+      .set('query', query)
+      .set('type', type)
+      .set('page', page.toString())
+      .set('size', '12');
+    return this.http.get<BasicSubject[]>(`${environment.apiUrl}/subjects/public`, { params });
   }
 
   getUserSubjects(): Observable<FullSubject[]> {

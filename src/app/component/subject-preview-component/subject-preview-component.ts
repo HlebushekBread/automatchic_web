@@ -68,6 +68,8 @@ export class SubjectPreviewComponent implements OnInit {
     () => this.authService.getTokenUsername() === this.subject().user.username,
   );
 
+  canCopy = signal(true);
+
   ngOnInit() {
     this.route.paramMap
       .pipe(
@@ -101,6 +103,9 @@ export class SubjectPreviewComponent implements OnInit {
     this.subjectService.copySubject(this.subject().id).subscribe({
       next: (response) => {
         this.router.navigate(['/subjects/view', response.id]);
+      },
+      error: () => {
+        this.canCopy.set(false);
       },
     });
   }
