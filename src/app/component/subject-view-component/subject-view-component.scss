@@ -498,11 +498,48 @@ input[type='number'] {
 }
 
 .chart-section {
+  display: flex;
+  flex-direction: column;
   padding: 20px;
   box-sizing: border-box;
   background-color: v.$bg-secondary;
   border-radius: v.$border-radius-main;
   box-shadow: v.$shadow-main;
+
+  .chart-controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .chart-input {
+    padding: 10px 12px;
+    background-color: v.$bg-main;
+    border: 2px solid v.$bg-tertiary;
+    border-radius: v.$border-radius-secondary;
+    color: v.$text-main;
+    font-size: v.$font-size-base;
+    @media (max-width: 768px) {
+      font-size: m.$font-size-base;
+    }
+    transition: v.$transition;
+    outline: none;
+
+    &:hover:not(select) {
+      background-color: v.$bg-tertiary;
+    }
+
+    &::placeholder {
+      color: v.$text-main;
+      opacity: 0.6;
+    }
+  }
+
+  select {
+    cursor: pointer;
+    //appearance: none;
+  }
 
   .chart-scroll {
     overflow-x: auto;
@@ -512,6 +549,30 @@ input[type='number'] {
 
   .chart {
     height: 400px;
+  }
+}
+
+.score-button {
+  flex: 1fr;
+  height: v.$control-height;
+  padding: 0 20px;
+  background-color: v.$bg-main;
+  color: v.$text-main;
+  border: 2px solid v.$bg-tertiary;
+  border-color: v.$bg-tertiary;
+  border-radius: v.$border-radius-secondary;
+  font-size: v.$font-size-small;
+  font-weight: 600;
+  cursor: pointer;
+  transition: v.$transition;
+
+  @media (max-width: 768px) {
+    height: m.$control-height;
+    font-size: m.$font-size-small;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: v.$bg-tertiary;
   }
 }
 
@@ -533,30 +594,6 @@ input[type='number'] {
     gap: 20px;
     @media (max-width: 1060px) {
       flex-direction: column;
-    }
-
-    .progress-button {
-      flex: 1fr;
-      height: v.$control-height;
-      padding: 0 20px;
-      background-color: v.$bg-main;
-      color: v.$text-main;
-      border: 2px solid v.$bg-tertiary;
-      border-color: v.$bg-tertiary;
-      border-radius: v.$border-radius-secondary;
-      font-size: v.$font-size-small;
-      font-weight: 600;
-      cursor: pointer;
-      transition: v.$transition;
-
-      @media (max-width: 768px) {
-        height: m.$control-height;
-        font-size: m.$font-size-small;
-      }
-
-      &:hover:not(:disabled) {
-        background-color: v.$bg-tertiary;
-      }
     }
 
     .grading-info {

@@ -148,8 +148,33 @@
       </form>
 
       <!-- -------------------------------------------------------- -->
-      @if (isProgressModalOpen() && rawChartData()) {
-        <div class="chart-section">
+      <div class="chart-section">
+        <div class="chart-controls">
+          @if (!isProgressModalOpen()) {
+            <div></div>
+            <button
+              class="score-button"
+              (click)="onUpdateProgress(); isProgressModalOpen.set(true)"
+            >
+              Посмотреть прогресс
+            </button>
+          } @else {
+            <div style="display: flex; gap: 10px">
+              <button class="chart-input" (click)="onUpdateProgress()">Обновить</button>
+              <select class="chart-input" (change)="onIntervalChange($event)">
+                <option value="10000">10s</option>
+                <option value="300000">5m</option>
+                <option value="3600000">1h</option>
+                <option value="21600000">6h</option>
+                <option value="86400000">1d</option>
+              </select>
+            </div>
+            <button class="score-button" (click)="isProgressModalOpen.set(false)">
+              Скрыть прогресс
+            </button>
+          }
+        </div>
+        @if (isProgressModalOpen() && rawChartData()) {
           <div class="chart-scroll" #scrollChart>
             <div
               echarts
@@ -159,8 +184,8 @@
               [autoResize]="true"
             ></div>
           </div>
-        </div>
-      }
+        }
+      </div>
 
       <!-- -------------------------------------------------------- -->
       <div class="task-section">
@@ -241,13 +266,7 @@
               </div>
             </div>
           </div>
-          @if (!isProgressModalOpen()) {
-            <button class="progress-button" (click)="onShowProgress()">Посмотреть прогресс</button>
-          } @else {
-            <button class="progress-button" (click)="isProgressModalOpen.set(false)">
-              Скрыть прогресс
-            </button>
-          }
+          <button class="score-button" (click)="recalculate()">Пересчитать максимум</button>
         </div>
         <div [formGroup]="taskGroup" style="display: flex; justify-content: center">
           <div

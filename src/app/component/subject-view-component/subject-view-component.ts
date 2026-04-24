@@ -364,9 +364,7 @@ export class SubjectViewComponent implements OnInit {
 
   @ViewChild('scrollChart') scrollChart!: ElementRef;
 
-  onShowProgress() {
-    this.isProgressModalOpen.set(true);
-
+  onUpdateProgress() {
     this.progressService
       .getChartDataById(this.savedSubject().id, this.interval)
       .subscribe((data) => {
@@ -387,8 +385,14 @@ export class SubjectViewComponent implements OnInit {
     this.isProgressModalOpen.set(false);
   }
 
-  interval = 10 * 1000;
+  interval = 10000;
   pxPerInterval = 10;
+
+  onIntervalChange(event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    this.interval = Number(selectElement.value);
+    this.onUpdateProgress();
+  }
 
   chartWidth = computed(() => {
     const data = this.rawChartData();
@@ -456,8 +460,11 @@ export class SubjectViewComponent implements OnInit {
               <span style="color: #a1a1aa; font-size: 12px;">
                 ${new Date(point.value[0]).toLocaleString()}
               </span><br/>
-              <span style="font-weight: 500;">
+              <span style="color: #f4f4f5">
                 Балл: ${real.current.toFixed(2)}
+              </span><br>
+              <span style="color: ${real.current > real.target ? '#28a745' : '#ff4d4d'}">
+                Цель: ${real.target.toFixed(2)}
               </span>
             </div>
           `;
@@ -766,6 +773,7 @@ export class SubjectViewComponent implements OnInit {
       this.taskForms.at(index).markAllAsTouched();
       return;
     }
+
     const taskData = group.getRawValue();
     console.log(taskData);
     this.taskService.saveTask(taskData).subscribe({

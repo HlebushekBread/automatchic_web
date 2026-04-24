@@ -75,7 +75,7 @@
     select {
       padding: 10px 12px;
       background-color: v.$bg-main;
-      border: 1px solid v.$bg-tertiary;
+      border: 2px solid v.$bg-tertiary;
       border-radius: v.$border-radius-secondary;
       color: v.$text-main;
       font-size: v.$font-size-base;
@@ -98,7 +98,7 @@
 
     select {
       cursor: pointer;
-      appearance: none;
+      //appearance: none;
     }
   }
 }
